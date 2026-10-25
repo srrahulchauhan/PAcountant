@@ -15,7 +15,6 @@ import {
   Plus,
   Receipt,
   Repeat,
-  ShieldAlert,
   Sparkles,
   TrendingDown,
   TrendingUp,
@@ -212,8 +211,6 @@ export const DashboardPage = () => {
       .slice(0, 4)
   }, [categories, expenses])
 
-  const overdueAlerts = upcomingEMIs.filter(u => u.isOverdue)
-
   return (
     <motion.div
       variants={containerVariants}
@@ -285,37 +282,6 @@ export const DashboardPage = () => {
           </motion.button>
         </div>
       </motion.div>
-
-      {/* Overdue Payment Alert Banner (if any) */}
-      {overdueAlerts.length > 0 && (
-        <motion.div
-          variants={itemVariants}
-          className="flex items-center justify-between rounded-2xl border border-rose-500/30 bg-gradient-to-r from-rose-950/50 via-slate-900 to-rose-950/30 p-4 text-xs text-rose-200 shadow-xl shadow-rose-950/30"
-        >
-          <div className="flex items-center gap-3">
-            <div className="rounded-xl bg-rose-500/20 p-2 text-rose-400 animate-pulse">
-              <ShieldAlert className="h-5 w-5" />
-            </div>
-            <div>
-              <p className="font-bold text-white text-sm">
-                Attention: {overdueAlerts.length} Loan Installment{overdueAlerts.length > 1 ? 's' : ''} Overdue!
-              </p>
-              <p className="text-rose-300 mt-0.5">
-                {overdueAlerts[0].loan.loanName} EMI of {formatINR(overdueAlerts[0].installment.emiAmount)} was due on {formatDate(overdueAlerts[0].dueDate)}. Please settle immediately.
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={() => {
-              setSelectedLoanForPayment(overdueAlerts[0].loan)
-              setModalType('pay_emi')
-            }}
-            className="rounded-xl bg-rose-600 px-4 py-2 font-semibold text-white hover:bg-rose-500 transition shadow-lg shrink-0"
-          >
-            Pay Now
-          </button>
-        </motion.div>
-      )}
 
       {/* 6 Key Financial KPI Stat Cards with Animated Counters */}
       <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
